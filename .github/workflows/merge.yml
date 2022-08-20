@@ -1,0 +1,22 @@
+on:
+  pull_request:
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Fix conflicts
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git merge origin main
+          git commit -m "merge"
+          git push
+
+      - name: Merge PR
+        run: gh pr merge $GITHUB_EVENT_PATH
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE: ${{ github.event.issue.html_url }}
