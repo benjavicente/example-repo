@@ -12,8 +12,8 @@ jobs:
       - name: Fix conflicts
         continue-on-error: true
         run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
+          git config user.name "{{ github.actor.name }}"
+          git config user.email "{{ github.actor.email }}"
           git merge origin/main
           # Las siguientes lineas pueden entregar código
           # distinto a 0 si no hay nada que commitear.
