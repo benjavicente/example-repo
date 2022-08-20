@@ -21,7 +21,7 @@ jobs:
           git push
 
       - name: Merge PR
-        run: gh pr merge $GITHUB_EVENT_PATH
+        run: gh pr merge $PR_NUMBER
         env:
+          PR_NUMBER: ${{ github.event.number }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ISSUE: ${{ github.event.issue.html_url }}
