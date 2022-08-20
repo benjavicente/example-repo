@@ -10,10 +10,13 @@ jobs:
           fetch-depth: 0
 
       - name: Fix conflicts
+        continue-on-error: true
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
           git merge origin/main
+          # Las siguientes lineas pueden entregar código
+          # distinto a 0 si no hay nada que commitear.
           git commit -m "merge"
           git push
 
