@@ -6,17 +6,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Fix conflicts
+        continue-on-error: true
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git merge origin main
+          git merge origin/main
+          # Las siguientes lineas pueden entregar código
+          # distinto a 0 si no hay nada que commitear.
           git commit -m "merge"
           git push
 
       - name: Merge PR
-        run: gh pr merge $GITHUB_EVENT_PATH
+        run: gh pr merge $PR_NUMBER --merge
         env:
+          PR_NUMBER: ${{ github.event.number }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ISSUE: ${{ github.event.issue.html_url }}
